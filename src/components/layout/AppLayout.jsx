@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import BottomNav from './BottomNav';
 
 export const AppLayout = ({ activeTab, setActiveTab, pageTitle, onOpenQuickAdd, children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -11,7 +12,7 @@ export const AppLayout = ({ activeTab, setActiveTab, pageTitle, onOpenQuickAdd, 
       <div className="ambient-glow ambient-glow-1" />
       <div className="ambient-glow ambient-glow-2" />
 
-      {/* Navigation Sidebar */}
+      {/* Navigation Sidebar (Desktop + Mobile Drawer) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -28,6 +29,14 @@ export const AppLayout = ({ activeTab, setActiveTab, pageTitle, onOpenQuickAdd, 
         />
         <div className="page-body">{children}</div>
       </main>
+
+      {/* Mobile Bottom Navigation Bar (Visible on < 1024px) */}
+      <BottomNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onOpenQuickAdd={onOpenQuickAdd}
+        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+      />
     </div>
   );
 };

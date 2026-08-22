@@ -36,31 +36,40 @@ export const CategoryPieChart = ({ transactions }) => {
 
   if (chartData.length === 0) {
     return (
-      <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="glass-card" style={{ height: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <p style={{ color: 'var(--text-muted)' }}>No expense data to display for this period.</p>
       </div>
     );
   }
 
   return (
-    <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ marginBottom: '0.5rem' }}>
+    <div className="glass-card" style={{ minHeight: '360px', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Expenses by Category</h3>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
           Distribution of your spending
         </p>
       </div>
 
-      <div style={{ display: 'flex', flex: 1, alignItems: 'center', minHeight: 0 }}>
-        <div style={{ width: '55%', height: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          flex: 1,
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          minHeight: '260px'
+        }}
+      >
+        <div style={{ flex: '1 1 180px', minHeight: '220px', height: '220px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                innerRadius={55}
-                outerRadius={85}
+                innerRadius={48}
+                outerRadius={76}
                 paddingAngle={3}
                 dataKey="value"
               >
@@ -83,7 +92,17 @@ export const CategoryPieChart = ({ transactions }) => {
         </div>
 
         {/* Category breakdown legend */}
-        <div style={{ width: '45%', maxHeight: '250px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.4rem', paddingRight: '0.5rem' }}>
+        <div
+          style={{
+            flex: '1 1 180px',
+            maxHeight: '220px',
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.4rem',
+            paddingRight: '0.25rem'
+          }}
+        >
           {chartData.map((item) => (
             <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.78rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden' }}>

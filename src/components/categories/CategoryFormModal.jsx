@@ -169,7 +169,7 @@ export const CategoryFormModal = ({ isOpen, onClose, initialData = null, default
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(6, 1fr)',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(44px, 1fr))',
               gap: '0.5rem',
               maxHeight: '160px',
               overflowY: 'auto',
