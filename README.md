@@ -6,7 +6,7 @@ A personal finance and expense management web application built with **React** a
 
 ##  Key Features
 
-### 1. 💼 Dashboard & Command Center
+### 1. Dashboard & Command Center
 - **Summary Cards**: Live calculation of Total Balance (`Total Income - Total Expenses`), Total Income, Total Expenses, and Remaining Budget.
 - **Cash & E-Wallet Separation**: Independent monitoring and ledger drilldown for **Cash In Hand**, **E-Wallet** (GCash, Maya), and **Bank Accounts**.
 - **Interactive Charts**: Monthly Income vs Expense comparison bar chart and Category spending breakdown donut chart.
