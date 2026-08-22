@@ -197,6 +197,10 @@ button {
   margin: 0 auto;
 }
 
+.app-header {
+  padding: 0 2rem;
+}
+
 @media (max-width: 1024px) {
   .app-sidebar {
     position: fixed !important;
@@ -220,9 +224,21 @@ button {
   }
 }
 
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 1rem;
+  }
+}
+
 @media (max-width: 480px) {
+  .app-header {
+    padding: 0 0.75rem;
+  }
+  .hide-on-xs {
+    display: none !important;
+  }
   .page-body {
-    padding: 1rem 0.75rem;
+    padding: 0.85rem 0.65rem;
     padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 2.5rem);
   }
 }

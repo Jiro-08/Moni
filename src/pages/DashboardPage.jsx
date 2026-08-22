@@ -69,20 +69,21 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
         }}
       >
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Financial Command Center</h2>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 4vw, 1.5rem)', fontWeight: 800 }}>Financial Command Center</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
             Real-time balance, cashflow, and spending limits
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', width: '100%', maxWidth: 'max-content' }}>
           <button
             onClick={() => handleOpenAddTx('income')}
             className="btn btn-secondary btn-sm"
             style={{
               borderColor: 'var(--income-border)',
               color: 'var(--income)',
-              borderRadius: 'var(--radius-full)'
+              borderRadius: 'var(--radius-full)',
+              flex: '1 1 auto'
             }}
           >
             <PlusCircle size={16} />
@@ -94,7 +95,8 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
             style={{
               borderColor: 'var(--expense-border)',
               color: 'var(--expense)',
-              borderRadius: 'var(--radius-full)'
+              borderRadius: 'var(--radius-full)',
+              flex: '1 1 auto'
             }}
           >
             <MinusCircle size={16} />
@@ -103,7 +105,7 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
           <button
             onClick={() => setIsBudgetModalOpen(true)}
             className="btn btn-primary btn-sm"
-            style={{ borderRadius: 'var(--radius-full)' }}
+            style={{ borderRadius: 'var(--radius-full)', flex: '1 1 auto' }}
           >
             <PiggyBank size={16} />
             <span>New Budget</span>
@@ -114,15 +116,15 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
       {/* 1. Summary Cards (Total Balance, Income, Expenses, Remaining Budget) */}
       <SummaryCards />
 
-      {/* 2. Cash vs E-Wallet Breakdown (Objectives 4, 5, 6, 7 & 8) */}
+      {/* 2. Cash vs E-Wallet Breakdown */}
       <CashWalletBreakdown onSelectSourceFilter={onSelectSourceFilter} />
 
       {/* 3. Interactive Charts Grid */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '1.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+          gap: '1.25rem',
           marginBottom: '1.75rem'
         }}
       >
@@ -134,8 +136,8 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '1.5rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+          gap: '1.25rem'
         }}
       >
         <RecentTransactions

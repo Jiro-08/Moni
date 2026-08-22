@@ -78,14 +78,14 @@ export const BudgetsPage = () => {
         }}
       >
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Budget Management</h2>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 4vw, 1.5rem)', fontWeight: 800 }}>Budget Management</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
             Set category limits, monitor spending velocity, and prevent overspending
           </p>
         </div>
 
-        <button onClick={handleOpenAdd} className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)' }}>
-          <Plus size={18} />
+        <button onClick={handleOpenAdd} className="btn btn-primary btn-sm" style={{ borderRadius: 'var(--radius-full)' }}>
+          <Plus size={16} />
           <span>Create Budget</span>
         </button>
       </div>
@@ -96,31 +96,31 @@ export const BudgetsPage = () => {
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
             Total Budget Limit
           </span>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '0.35rem' }}>
+          <h3 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)', fontWeight: 800, marginTop: '0.35rem' }}>
             {formatCurrency(totalAllocated, currency)}
           </h3>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Across all active budgets</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sum of active limits</span>
         </div>
 
         <div className="glass-card">
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-            Total Spent
+            Total Budget Spent
           </span>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '0.35rem', color: 'var(--expense)' }}>
+          <h3 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)', fontWeight: 800, marginTop: '0.35rem', color: 'var(--expense)' }}>
             {formatCurrency(totalBudgetSpent, currency)}
           </h3>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            {totalAllocated > 0 ? Math.round((totalBudgetSpent / totalAllocated) * 100) : 0}% total allocated
+            {totalAllocated > 0 ? Math.round((totalBudgetSpent / totalAllocated) * 100) : 0}% total consumption
           </span>
         </div>
 
         <div className="glass-card">
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-            Budget Warnings
+            Warning Threshold
           </span>
           <h3
             style={{
-              fontSize: '1.5rem',
+              fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
               fontWeight: 800,
               marginTop: '0.35rem',
               color: warningCount > 0 ? 'var(--warning)' : 'var(--text-primary)'
@@ -137,7 +137,7 @@ export const BudgetsPage = () => {
           </span>
           <h3
             style={{
-              fontSize: '1.5rem',
+              fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)',
               fontWeight: 800,
               marginTop: '0.35rem',
               color: exceededCount > 0 ? 'var(--danger)' : 'var(--income)'
@@ -153,10 +153,10 @@ export const BudgetsPage = () => {
 
       {/* Budgets Grid */}
       {budgets.length === 0 ? (
-        <div className="glass-card" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-          <PiggyBank size={48} style={{ margin: '0 auto 1rem', opacity: 0.4 }} />
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>No Budgets Created Yet</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '400px', margin: '0.5rem auto 1.5rem' }}>
+        <div className="glass-card" style={{ textAlign: 'center', padding: '3.5rem 1rem' }}>
+          <PiggyBank size={44} style={{ margin: '0 auto 1rem', opacity: 0.4 }} />
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>No Budgets Created Yet</h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', maxWidth: '400px', margin: '0.5rem auto 1.5rem' }}>
             Take control of your finances by setting monthly limits on food, transportation, or overall expenses.
           </p>
           <button onClick={handleOpenAdd} className="btn btn-primary">
@@ -164,7 +164,7 @@ export const BudgetsPage = () => {
           </button>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.25rem' }}>
           {budgets.map((budget) => (
             <BudgetCard
               key={budget.id}
@@ -178,23 +178,24 @@ export const BudgetsPage = () => {
         </div>
       )}
 
-      {/* Add / Edit Modal */}
+      {/* Budget Creation / Edit Modal */}
       <BudgetFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
         initialData={editingBudget}
       />
 
-      {/* Details Modal */}
+      {/* Budget Details Modal */}
       <BudgetDetailsModal
         isOpen={isDetailsOpen}
         onClose={() => setIsDetailsOpen(false)}
         budget={selectedBudget}
         statusInfo={selectedStatusInfo}
         onEdit={handleEdit}
+        onDelete={handleDeletePrompt}
       />
 
-      {/* Delete Confirmation */}
+      {/* Delete Confirmation Modal */}
       <ConfirmDialog
         isOpen={Boolean(deletingBudget)}
         onClose={() => setDeletingBudget(null)}

@@ -64,13 +64,13 @@ export const AnalyticsPage = () => {
         }}
       >
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Reports & Financial Analytics</h2>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 4vw, 1.5rem)', fontWeight: 800 }}>Reports & Financial Analytics</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
             Visual breakdown of cashflow, spending distribution, and trends
           </p>
         </div>
 
-        {/* Period Selector Tabs */}
+        {/* Period Selector Tabs (Scrollable on Mobile) */}
         <div
           style={{
             display: 'flex',
@@ -78,28 +78,32 @@ export const AnalyticsPage = () => {
             padding: '4px',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-color)',
-            overflowX: 'auto'
+            overflowX: 'auto',
+            maxWidth: '100%',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none'
           }}
         >
           {[
             { id: 'all', label: 'All Time' },
             { id: 'this_month', label: 'This Month' },
             { id: 'last_month', label: 'Last Month' },
-            { id: '3_months', label: 'Last 3 Months' },
+            { id: '3_months', label: '3 Months' },
             { id: 'this_year', label: 'This Year' }
           ].map((item) => (
             <button
               key={item.id}
               onClick={() => setPeriod(item.id)}
               style={{
-                padding: '0.45rem 0.85rem',
+                padding: '0.45rem 0.75rem',
                 borderRadius: 'var(--radius-sm)',
                 fontWeight: 600,
                 fontSize: '0.8rem',
                 background: period === item.id ? 'var(--primary)' : 'transparent',
                 color: period === item.id ? '#ffffff' : 'var(--text-secondary)',
                 whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease'
+                transition: 'all 0.15s ease',
+                flexShrink: 0
               }}
             >
               {item.label}
@@ -115,8 +119,8 @@ export const AnalyticsPage = () => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '1.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+          gap: '1.25rem',
           marginBottom: '1.5rem'
         }}
       >

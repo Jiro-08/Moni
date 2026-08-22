@@ -50,63 +50,69 @@ export const CategoriesPage = () => {
         }}
       >
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Categories Management</h2>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 4vw, 1.5rem)', fontWeight: 800 }}>Categories Management</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
             Customize your income and expense categories with icons and color tags
           </p>
         </div>
 
-        <button onClick={handleOpenAdd} className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)' }}>
-          <Plus size={18} />
+        <button onClick={handleOpenAdd} className="btn btn-primary btn-sm" style={{ borderRadius: 'var(--radius-full)' }}>
+          <Plus size={16} />
           <span>New Category</span>
         </button>
       </div>
 
-      {/* Type Switcher Tabs */}
+      {/* Type Switcher Tabs (Responsive Full Width on Mobile) */}
       <div
         style={{
-          display: 'inline-flex',
+          display: 'flex',
           background: 'var(--bg-input)',
           padding: '4px',
           borderRadius: 'var(--radius-md)',
           marginBottom: '1.5rem',
-          border: '1px solid var(--border-color)'
+          border: '1px solid var(--border-color)',
+          maxWidth: '500px',
+          width: '100%'
         }}
       >
         <button
           type="button"
           onClick={() => setActiveTab('expense')}
           style={{
-            padding: '0.5rem 1.25rem',
+            flex: 1,
+            padding: '0.5rem 0.75rem',
             borderRadius: 'var(--radius-sm)',
             fontWeight: 700,
-            fontSize: '0.875rem',
+            fontSize: '0.85rem',
             background: activeTab === 'expense' ? 'var(--expense)' : 'transparent',
             color: activeTab === 'expense' ? '#ffffff' : 'var(--text-secondary)',
-            transition: 'all 0.15s ease'
+            transition: 'all 0.15s ease',
+            textAlign: 'center'
           }}
         >
-          Expense Categories ({categories.filter((c) => c.type === 'expense').length})
+          Expense ({categories.filter((c) => c.type === 'expense').length})
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('income')}
           style={{
-            padding: '0.5rem 1.25rem',
+            flex: 1,
+            padding: '0.5rem 0.75rem',
             borderRadius: 'var(--radius-sm)',
             fontWeight: 700,
-            fontSize: '0.875rem',
+            fontSize: '0.85rem',
             background: activeTab === 'income' ? 'var(--income)' : 'transparent',
             color: activeTab === 'income' ? '#ffffff' : 'var(--text-secondary)',
-            transition: 'all 0.15s ease'
+            transition: 'all 0.15s ease',
+            textAlign: 'center'
           }}
         >
-          Income Categories ({categories.filter((c) => c.type === 'income').length})
+          Income ({categories.filter((c) => c.type === 'income').length})
         </button>
       </div>
 
       {/* Categories Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: '1rem' }}>
         {filteredCategories.map((cat) => {
           const count = transactions.filter((tx) => tx.category_id === cat.id).length;
           return (
@@ -117,39 +123,42 @@ export const CategoriesPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '1.25rem'
+                padding: '1.1rem'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
                 <div
                   style={{
-                    width: '42px',
-                    height: '42px',
+                    width: '40px',
+                    height: '40px',
                     borderRadius: '12px',
                     backgroundColor: cat.color ? `${cat.color}22` : 'var(--bg-input)',
                     color: cat.color || 'var(--primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    border: `1px solid ${cat.color ? `${cat.color}44` : 'transparent'}`
+                    border: `1px solid ${cat.color ? `${cat.color}44` : 'transparent'}`,
+                    flexShrink: 0
                   }}
                 >
-                  <DynamicIcon name={cat.icon || 'Tag'} size={20} />
+                  <DynamicIcon name={cat.icon || 'Tag'} size={19} />
                 </div>
-                <div>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>{cat.name}</h4>
+                <div style={{ minWidth: 0 }}>
+                  <h4 style={{ fontSize: '0.925rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {cat.name}
+                  </h4>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {count} {count === 1 ? 'transaction' : 'transactions'}
+                    {count} {count === 1 ? 'record' : 'records'}
                   </span>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '0.2rem' }}>
+              <div style={{ display: 'flex', gap: '0.2rem', flexShrink: 0 }}>
                 <button
                   onClick={() => handleEdit(cat)}
                   className="btn btn-ghost btn-icon"
                   title="Edit Category"
-                  style={{ width: '30px', height: '30px' }}
+                  style={{ width: '32px', height: '32px' }}
                 >
                   <Edit2 size={14} />
                 </button>
@@ -157,7 +166,7 @@ export const CategoriesPage = () => {
                   onClick={() => handleDeletePrompt(cat)}
                   className="btn btn-ghost btn-icon"
                   title="Delete Category"
-                  style={{ width: '30px', height: '30px', color: 'var(--danger)' }}
+                  style={{ width: '32px', height: '32px', color: 'var(--danger)' }}
                 >
                   <Trash2 size={14} />
                 </button>

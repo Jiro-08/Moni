@@ -25,10 +25,9 @@ export const NotificationDropdown = ({ isOpen, onClose }) => {
     <div
       style={{
         position: 'absolute',
-        top: '60px',
-        right: '1.5rem',
-        width: '360px',
-        maxWidth: '90vw',
+        top: 'calc(100% + 10px)',
+        right: 0,
+        width: 'min(360px, calc(100vw - 1.5rem))',
         background: 'var(--bg-secondary)',
         border: '1px solid var(--border-color)',
         borderRadius: 'var(--radius-lg)',
