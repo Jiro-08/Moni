@@ -4,17 +4,16 @@ import {
   Receipt,
   PiggyBank,
   PieChart,
-  Plus,
-  Menu
+  Plus
 } from 'lucide-react';
 
-export const BottomNav = ({ activeTab, setActiveTab, onOpenQuickAdd, onToggleSidebar }) => {
+export const BottomNav = ({ activeTab, setActiveTab, onOpenQuickAdd }) => {
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'transactions', label: 'Ledger', icon: Receipt },
     { id: 'add', label: 'Add', isAction: true },
-    { id: 'budgets', label: 'Budgets', icon: PiggyBank },
-    { id: 'analytics', label: 'Reports', icon: PieChart }
+    { id: 'budgets', label: 'Budget', icon: PiggyBank },
+    { id: 'analytics', label: 'Report', icon: PieChart }
   ];
 
   return (
@@ -28,7 +27,7 @@ export const BottomNav = ({ activeTab, setActiveTab, onOpenQuickAdd, onToggleSid
                 type="button"
                 onClick={onOpenQuickAdd}
                 className="mobile-fab-btn"
-                aria-label="Add transaction"
+                aria-label="Add record"
               >
                 <Plus size={22} color="#ffffff" />
               </button>
@@ -51,17 +50,6 @@ export const BottomNav = ({ activeTab, setActiveTab, onOpenQuickAdd, onToggleSid
             </button>
           );
         })}
-
-        {/* Extra toggle for remaining menu tabs */}
-        <button
-          type="button"
-          onClick={onToggleSidebar}
-          className="mobile-nav-item"
-          aria-label="More navigation options"
-        >
-          <Menu size={19} color="var(--text-muted)" />
-          <span>More</span>
-        </button>
       </div>
     </nav>
   );

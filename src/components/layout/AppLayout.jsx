@@ -35,7 +35,6 @@ export const AppLayout = ({ activeTab, setActiveTab, pageTitle, onOpenQuickAdd, 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenQuickAdd={onOpenQuickAdd}
-        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
       />
     </div>
   );
