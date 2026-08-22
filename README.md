@@ -1,10 +1,10 @@
-# Moni: Personal Budget and Expense Tracker 💰
+# Moni: Personal Budget and Expense Tracker 
 
 A personal finance and expense management web application built with **React** and **Supabase**, designed according to the full project specification.
 
 ---
 
-## 🌟 Key Features
+##  Key Features
 
 ### 1. 💼 Dashboard & Command Center
 - **Summary Cards**: Live calculation of Total Balance (`Total Income - Total Expenses`), Total Income, Total Expenses, and Remaining Budget.
@@ -12,19 +12,19 @@ A personal finance and expense management web application built with **React** a
 - **Interactive Charts**: Monthly Income vs Expense comparison bar chart and Category spending breakdown donut chart.
 - **Recent Transactions & Budget Quick View**: Fast status checks and one-click quick action buttons.
 
-### 2. 📝 Full Transaction Ledger
+### 2.  Full Transaction Ledger
 - Record **Income** and **Expenses** with amount, payment source, category, date, description, and notes.
 - **Dynamic Category Filtering**: Selecting *Income* shows income categories; selecting *Expense* shows expense categories.
 - **Search & Multi-filtering**: Search by keyword/notes, filter by category, payment source (Cash, E-Wallet, Bank), type, and month.
 - **Sorting**: Newest, Oldest, Highest amount, and Lowest amount.
 - **CSV Export**: 1-click ledger export.
 
-### 3. 🎯 Smart Budget Management
+### 3.  Smart Budget Management
 - Create **Monthly Overall Budgets** and **Category-Specific Budgets**.
 - **Proactive Warnings**: Live threshold tracking (Safe, Warning at 80%+, Exceeded).
 - **Budget Drilldown**: View all contributing transactions for each budget period.
 
-### 4. 📊 Reports & Visual Analytics
+### 4.  Reports & Visual Analytics
 - Financial summaries (Net balance, Average daily spending, Top spending category).
 - Recharts visualizations:
   - **Bar Chart**: Income vs Expenses over time.
@@ -32,11 +32,11 @@ A personal finance and expense management web application built with **React** a
   - **Area Chart**: Daily spending velocity timeline.
 - Period filters: *All Time*, *This Month*, *Last Month*, *Last 3 Months*, *This Year*.
 
-### 5. 🏷️ Custom Category Management
+### 5.  Custom Category Management
 - Pre-populated default categories for Income (Salary, Allowance, Freelance, Business, Investment, Gift, Other) and Expense (Food & Dining, Transportation, Housing, Utilities, Education, Healthcare, Shopping, etc.).
 - Create custom categories with custom icons and colors.
 
-### 6. 🔔 In-App Notifications & Settings
+### 6.  In-App Notifications & Settings
 - Real-time budget warning alerts and threshold notifications.
 - Currency selection (Default **Philippine Peso ₱**, USD $, EUR €, etc.).
 - Dark & Light mode themes with glassmorphic luxury styling.
@@ -44,7 +44,7 @@ A personal finance and expense management web application built with **React** a
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (version 18 or higher recommended)
@@ -63,7 +63,7 @@ Open your browser and navigate to `http://localhost:3000`.
 
 ---
 
-## 🗄️ Supabase Database Integration
+##  Supabase Database Integration
 
 The application is fully functional offline with **Demo / LocalStorage Mode**. To connect your live Supabase database:
 
@@ -79,7 +79,7 @@ The application is fully functional offline with **Demo / LocalStorage Mode**. T
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Moni(WebApp)/
