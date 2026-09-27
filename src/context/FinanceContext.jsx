@@ -360,10 +360,11 @@ export const FinanceProvider = ({ children }) => {
       category_color: '#6366f1',
       amount: parseFloat(amount),
       description: `Transfer to ${toLabel}`,
-      notes: notes || `Funds transferred from ${fromLabel} to ${toLabel}`,
+      notes: notes ? `${notes} [Internal Transfer]` : `Funds transferred from ${fromLabel} to ${toLabel} [Internal Transfer]`,
       transaction_date: transferDate,
       transfer_id: transferId,
       transfer_type: 'outgoing',
+      is_transfer: true,
       created_at: new Date().toISOString()
     };
 
@@ -379,10 +380,11 @@ export const FinanceProvider = ({ children }) => {
       category_color: '#6366f1',
       amount: parseFloat(amount),
       description: `Transfer from ${fromLabel}`,
-      notes: notes || `Funds transferred from ${fromLabel} to ${toLabel}`,
+      notes: notes ? `${notes} [Internal Transfer]` : `Funds transferred from ${fromLabel} to ${toLabel} [Internal Transfer]`,
       transaction_date: transferDate,
       transfer_id: transferId,
       transfer_type: 'incoming',
+      is_transfer: true,
       created_at: new Date().toISOString()
     };
 

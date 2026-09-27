@@ -3,6 +3,38 @@
 // ==============================================================================
 
 /**
+ * Check if a transaction is an internal transfer between user accounts
+ */
+export function isTransferTransaction(tx) {
+  if (!tx) return false;
+  if (tx.transfer_id || tx.transfer_type || tx.is_transfer) return true;
+
+  const cat = (tx.category_name || '').toLowerCase().trim();
+  if (cat === 'transfer' || cat === 'transfers' || cat === 'fund transfer' || cat === 'funds transfer') {
+    return true;
+  }
+
+  const desc = (tx.description || '').toLowerCase().trim();
+  if (
+    desc.startsWith('transfer to') ||
+    desc.startsWith('transfer from') ||
+    desc.startsWith('transfer:') ||
+    desc.includes('fund transfer') ||
+    desc.includes('cash to e-wallet') ||
+    desc.includes('cash to ewallet')
+  ) {
+    return true;
+  }
+
+  const notes = (tx.notes || '').toLowerCase();
+  if (notes.includes('funds transferred') || notes.includes('[internal transfer]')) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Calculate financial totals (Total Income, Total Expenses, Net Balance)
  * and source breakdowns (Cash, E-Wallet, Bank)
  */
@@ -22,24 +54,31 @@ export function calculateFinancialSummary(transactions = []) {
   transactions.forEach((tx) => {
     const amount = Number(tx.amount) || 0;
     const source = tx.payment_source || 'cash';
+    const isTransfer = isTransferTransaction(tx);
 
     if (tx.type === 'income') {
-      totalIncome += amount;
+      // Internal transfers are not external income: do not add to totalIncome
+      if (!isTransfer) {
+        totalIncome += amount;
+      }
       if (source === 'cash') cashIncome += amount;
       else if (source === 'ewallet') ewalletIncome += amount;
       else if (source === 'bank') bankIncome += amount;
     } else if (tx.type === 'expense') {
-      totalExpenses += amount;
+      // Internal transfers are not external expenses: do not add to totalExpenses
+      if (!isTransfer) {
+        totalExpenses += amount;
+      }
       if (source === 'cash') cashExpenses += amount;
       else if (source === 'ewallet') ewalletExpenses += amount;
       else if (source === 'bank') bankExpenses += amount;
     }
   });
 
-  const totalBalance = totalIncome - totalExpenses;
   const cashBalance = cashIncome - cashExpenses;
   const ewalletBalance = ewalletIncome - ewalletExpenses;
   const bankBalance = bankIncome - bankExpenses;
+  const totalBalance = cashBalance + ewalletBalance + bankBalance;
 
   const savingsRate = totalIncome > 0 ? Math.max(0, ((totalIncome - totalExpenses) / totalIncome) * 100) : 0;
 
@@ -61,9 +100,10 @@ export function calculateBudgetStatus(budget, transactions = []) {
   const budgetAmount = Number(budget.amount) || 0;
   if (budgetAmount <= 0) return { spent: 0, remaining: 0, percent: 0, status: 'safe' };
 
-  // Filter matching expenses
+  // Filter matching expenses (excluding internal transfers)
   const relevantExpenses = transactions.filter((tx) => {
     if (tx.type !== 'expense') return false;
+    if (isTransferTransaction(tx)) return false;
 
     // Check category match if category_id is specified
     if (budget.category_id && tx.category_id !== budget.category_id) {

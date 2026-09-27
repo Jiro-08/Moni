@@ -149,6 +149,7 @@ export const TransactionFilterBar = ({
             <option value="all">All Types</option>
             <option value="income">Income (+)</option>
             <option value="expense">Expense (-)</option>
+            <option value="transfer">Transfers (↔)</option>
           </select>
         </div>
 

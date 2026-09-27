@@ -740,10 +740,10 @@ button {
 
 /* Responsive visibility */
 .hide-on-mobile {
-  display: flex;
+  display: block;
 }
 .show-on-mobile {
-  display: none;
+  display: none !important;
 }
 
 @media (max-width: 768px) {

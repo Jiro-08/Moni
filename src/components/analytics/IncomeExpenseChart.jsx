@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCurrency } from '../../utils/formatters';
+import { isTransferTransaction } from '../../utils/calculations';
 
 export const IncomeExpenseChart = ({ transactions }) => {
   const { currency, theme } = useTheme();
@@ -28,6 +29,9 @@ export const IncomeExpenseChart = ({ transactions }) => {
   }
 
   transactions.forEach((tx) => {
+    // Exclude internal transfers
+    if (isTransferTransaction(tx)) return;
+
     const d = new Date(tx.transaction_date);
     const key = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
     if (monthlyDataMap[key]) {

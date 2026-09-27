@@ -10,13 +10,14 @@ import {
 } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { isTransferTransaction } from '../../utils/calculations';
 
 export const SpendingTrendChart = ({ transactions }) => {
   const { currency, theme } = useTheme();
 
-  // Aggregate daily expenses sorted chronologically
+  // Aggregate daily expenses sorted chronologically (excluding internal transfers)
   const expenseTransactions = transactions
-    .filter((tx) => tx.type === 'expense')
+    .filter((tx) => tx.type === 'expense' && !isTransferTransaction(tx))
     .sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date));
 
   const dailyMap = {};

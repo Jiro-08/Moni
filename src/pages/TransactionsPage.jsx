@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Plus, Download, ArrowRightLeft } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
+import { isTransferTransaction } from '../utils/calculations';
 import TransactionFilterBar from '../components/transactions/TransactionFilterBar';
 import TransactionList from '../components/transactions/TransactionList';
 import TransactionFormModal from '../components/transactions/TransactionFormModal';
@@ -41,8 +42,12 @@ export const TransactionsPage = ({ initialSourceFilter = 'all' }) => {
         }
 
         // Type
-        if (selectedType !== 'all' && tx.type !== selectedType) {
-          return false;
+        if (selectedType === 'transfer') {
+          if (!isTransferTransaction(tx)) return false;
+        } else if (selectedType !== 'all') {
+          if (tx.type !== selectedType || isTransferTransaction(tx)) {
+            return false;
+          }
         }
 
         // Category

@@ -2,6 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCurrency } from '../../utils/formatters';
+import { isTransferTransaction } from '../../utils/calculations';
 
 const DEFAULT_COLORS = [
   '#f97316', '#eab308', '#14b8a6', '#0284c7', '#6366f1',
@@ -12,12 +13,12 @@ const DEFAULT_COLORS = [
 export const CategoryPieChart = ({ transactions }) => {
   const { currency, theme } = useTheme();
 
-  // Aggregate expenses by category
+  // Aggregate expenses by category (excluding internal transfers)
   const expenseMap = {};
   let totalExpense = 0;
 
   transactions.forEach((tx) => {
-    if (tx.type === 'expense') {
+    if (tx.type === 'expense' && !isTransferTransaction(tx)) {
       const amount = Number(tx.amount) || 0;
       const catName = tx.category_name || 'Other';
       totalExpense += amount;

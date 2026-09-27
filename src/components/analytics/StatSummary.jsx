@@ -2,6 +2,7 @@ import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Award, Calculator, Calendar } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCurrency } from '../../utils/formatters';
+import { isTransferTransaction } from '../../utils/calculations';
 
 export const StatSummary = ({ transactions }) => {
   const { currency } = useTheme();
@@ -13,14 +14,19 @@ export const StatSummary = ({ transactions }) => {
 
   transactions.forEach((tx) => {
     const amount = Number(tx.amount) || 0;
+    const isTransfer = isTransferTransaction(tx);
     if (tx.transaction_date) dates.add(tx.transaction_date);
 
     if (tx.type === 'income') {
-      totalIncome += amount;
+      if (!isTransfer) {
+        totalIncome += amount;
+      }
     } else if (tx.type === 'expense') {
-      totalExpense += amount;
-      const cat = tx.category_name || 'Other';
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + amount;
+      if (!isTransfer) {
+        totalExpense += amount;
+        const cat = tx.category_name || 'Other';
+        categoryTotals[cat] = (categoryTotals[cat] || 0) + amount;
+      }
     }
   });
 
