@@ -25,6 +25,10 @@ export const DEFAULT_CATEGORIES = [
   { id: 'cat-exp-10', name: 'Personal Care', type: 'expense', icon: 'Smile', color: '#f43f5e' },
   { id: 'cat-exp-11', name: 'Savings', type: 'expense', icon: 'PiggyBank', color: '#10b981' },
   { id: 'cat-exp-12', name: 'Other Expenses', type: 'expense', icon: 'MoreHorizontal', color: '#64748b' },
+
+  // Transfer Categories (used internally for fund transfers between accounts)
+  { id: 'cat-transfer-out', name: 'Transfer', type: 'expense', icon: 'ArrowRightLeft', color: '#6366f1' },
+  { id: 'cat-transfer-in', name: 'Transfer', type: 'income', icon: 'ArrowRightLeft', color: '#6366f1' },
 ];
 
 export const AVAILABLE_ICONS = [

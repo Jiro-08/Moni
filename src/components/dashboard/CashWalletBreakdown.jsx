@@ -1,10 +1,10 @@
 import React from 'react';
-import { Banknote, Smartphone, Building, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Banknote, Smartphone, Building, ArrowUpRight, ArrowDownRight, ArrowRightLeft } from 'lucide-react';
 import { useFinance } from '../../context/FinanceContext';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCurrency } from '../../utils/formatters';
 
-export const CashWalletBreakdown = ({ onSelectSourceFilter }) => {
+export const CashWalletBreakdown = ({ onSelectSourceFilter, onTransfer }) => {
   const { summary } = useFinance();
   const { currency } = useTheme();
 
@@ -97,6 +97,16 @@ export const CashWalletBreakdown = ({ onSelectSourceFilter }) => {
                     style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', color: w.color }}
                   >
                     View ledger
+                  </button>
+                )}
+                {onTransfer && (
+                  <button
+                    onClick={() => onTransfer(w.id)}
+                    className="btn btn-ghost btn-sm"
+                    style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', color: '#818cf8', gap: '0.25rem' }}
+                  >
+                    <ArrowRightLeft size={12} />
+                    Transfer
                   </button>
                 )}
               </div>

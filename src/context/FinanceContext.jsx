@@ -327,6 +327,121 @@ export const FinanceProvider = ({ children }) => {
   };
 
   // ---------------------------------------------------------------------------
+  // Transfer Between Accounts (Cash <-> E-Wallet <-> Bank)
+  // ---------------------------------------------------------------------------
+  const transferFunds = async (transferData) => {
+    const { from, to, amount, notes = '', date } = transferData;
+    const transferId = 'txfr-' + Date.now();
+    const transferDate = date || new Date().toISOString().split('T')[0];
+
+    // Find Transfer categories for expense (outgoing) and income (incoming)
+    const transferOutCategory = categories.find(
+      (c) => (c.name === 'Transfer' || c.name === 'Transfers') && c.type === 'expense'
+    );
+    const transferInCategory = categories.find(
+      (c) => (c.name === 'Transfer' || c.name === 'Transfers') && c.type === 'income'
+    );
+    const transferOutCategoryId = transferOutCategory?.id || null;
+    const transferInCategoryId = transferInCategory?.id || null;
+
+    const sourceLabels = { cash: 'Cash', ewallet: 'E-Wallet', bank: 'Bank' };
+    const fromLabel = sourceLabels[from] || from;
+    const toLabel = sourceLabels[to] || to;
+
+    // 1. Create outgoing transaction (expense from source)
+    const outgoingTx = {
+      id: transferId + '-out',
+      user_id: user?.id || 'guest-user',
+      type: 'expense',
+      payment_source: from,
+      category_id: transferOutCategoryId,
+      category_name: 'Transfer',
+      category_icon: 'ArrowRightLeft',
+      category_color: '#6366f1',
+      amount: parseFloat(amount),
+      description: `Transfer to ${toLabel}`,
+      notes: notes || `Funds transferred from ${fromLabel} to ${toLabel}`,
+      transaction_date: transferDate,
+      transfer_id: transferId,
+      transfer_type: 'outgoing',
+      created_at: new Date().toISOString()
+    };
+
+    // 2. Create incoming transaction (income to destination)
+    const incomingTx = {
+      id: transferId + '-in',
+      user_id: user?.id || 'guest-user',
+      type: 'income',
+      payment_source: to,
+      category_id: transferInCategoryId,
+      category_name: 'Transfer',
+      category_icon: 'ArrowRightLeft',
+      category_color: '#6366f1',
+      amount: parseFloat(amount),
+      description: `Transfer from ${fromLabel}`,
+      notes: notes || `Funds transferred from ${fromLabel} to ${toLabel}`,
+      transaction_date: transferDate,
+      transfer_id: transferId,
+      transfer_type: 'incoming',
+      created_at: new Date().toISOString()
+    };
+
+    // Optimistically update local state
+    const updatedTransactions = [incomingTx, outgoingTx, ...transactions];
+    setTransactions(updatedTransactions);
+
+    // Add notification
+    addNotification({
+      title: '↔️ Transfer Completed',
+      message: `${parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} moved from ${fromLabel} to ${toLabel}.`,
+      type: 'info'
+    });
+
+    // Sync to Supabase if online
+    if (user && isSupabaseConfigured() && supabase) {
+      const makeDbPayload = (tx) => ({
+        user_id: user.id,
+        type: tx.type,
+        payment_source: tx.payment_source,
+        category_id: tx.category_id,
+        amount: tx.amount,
+        description: tx.description,
+        notes: tx.notes,
+        transaction_date: tx.transaction_date
+      });
+
+      if (syncState.isOnline) {
+        try {
+          const { data: d1, error: e1 } = await supabase
+            .from('transactions')
+            .insert([makeDbPayload(outgoingTx)])
+            .select()
+            .single();
+          if (e1) throw e1;
+          if (d1) outgoingTx.id = d1.id;
+
+          const { data: d2, error: e2 } = await supabase
+            .from('transactions')
+            .insert([makeDbPayload(incomingTx)])
+            .select()
+            .single();
+          if (e2) throw e2;
+          if (d2) incomingTx.id = d2.id;
+        } catch (err) {
+          console.log('Transfer sync failed, queueing for later...');
+          syncService.enqueue({ type: 'add_transaction', payload: makeDbPayload(outgoingTx) });
+          syncService.enqueue({ type: 'add_transaction', payload: makeDbPayload(incomingTx) });
+        }
+      } else {
+        syncService.enqueue({ type: 'add_transaction', payload: makeDbPayload(outgoingTx) });
+        syncService.enqueue({ type: 'add_transaction', payload: makeDbPayload(incomingTx) });
+      }
+    }
+
+    return { outgoingTx, incomingTx };
+  };
+
+  // ---------------------------------------------------------------------------
   // Budget Actions (Optimistic Local + Offline Sync Queue)
   // ---------------------------------------------------------------------------
   const addBudget = async (bgData) => {
@@ -644,6 +759,7 @@ export const FinanceProvider = ({ children }) => {
         addTransaction,
         editTransaction,
         deleteTransaction,
+        transferFunds,
         addBudget,
         editBudget,
         deleteBudget,

@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, Download } from 'lucide-react';
+import { Plus, Download, ArrowRightLeft } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 import TransactionFilterBar from '../components/transactions/TransactionFilterBar';
 import TransactionList from '../components/transactions/TransactionList';
 import TransactionFormModal from '../components/transactions/TransactionFormModal';
 import TransactionDetailsModal from '../components/transactions/TransactionDetailsModal';
+import TransferModal from '../components/transactions/TransferModal';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 
 export const TransactionsPage = ({ initialSourceFilter = 'all' }) => {
@@ -20,6 +21,7 @@ export const TransactionsPage = ({ initialSourceFilter = 'all' }) => {
 
   // Modals
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -150,10 +152,20 @@ export const TransactionsPage = ({ initialSourceFilter = 'all' }) => {
           </p>
         </div>
 
-        <button onClick={handleOpenAdd} className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)' }}>
-          <Plus size={18} />
-          <span>Record Transaction</span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setIsTransferOpen(true)}
+            className="btn btn-secondary"
+            style={{ borderRadius: 'var(--radius-full)' }}
+          >
+            <ArrowRightLeft size={18} />
+            <span>Transfer Funds</span>
+          </button>
+          <button onClick={handleOpenAdd} className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)' }}>
+            <Plus size={18} />
+            <span>Record Transaction</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Bar */}
@@ -186,6 +198,12 @@ export const TransactionsPage = ({ initialSourceFilter = 'all' }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         initialData={editingTransaction}
+      />
+
+      {/* Transfer Funds Modal */}
+      <TransferModal
+        isOpen={isTransferOpen}
+        onClose={() => setIsTransferOpen(false)}
       />
 
       {/* Details Modal */}

@@ -7,10 +7,11 @@ import IncomeExpenseChart from '../components/analytics/IncomeExpenseChart';
 import CategoryPieChart from '../components/analytics/CategoryPieChart';
 import TransactionFormModal from '../components/transactions/TransactionFormModal';
 import TransactionDetailsModal from '../components/transactions/TransactionDetailsModal';
+import TransferModal from '../components/transactions/TransferModal';
 import BudgetFormModal from '../components/budgets/BudgetFormModal';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 import { useFinance } from '../context/FinanceContext';
-import { PlusCircle, MinusCircle, PiggyBank } from 'lucide-react';
+import { PlusCircle, MinusCircle, PiggyBank, ArrowRightLeft } from 'lucide-react';
 
 export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
   const { transactions, deleteTransaction } = useFinance();
@@ -24,6 +25,9 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
+
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
+  const [transferFrom, setTransferFrom] = useState('cash');
 
   const [deletingTx, setDeletingTx] = useState(null);
 
@@ -110,6 +114,19 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
             <PiggyBank size={16} />
             <span>New Budget</span>
           </button>
+          <button
+            onClick={() => setIsTransferOpen(true)}
+            className="btn btn-secondary btn-sm"
+            style={{
+              borderColor: 'rgba(99, 102, 241, 0.4)',
+              color: '#818cf8',
+              borderRadius: 'var(--radius-full)',
+              flex: '1 1 auto'
+            }}
+          >
+            <ArrowRightLeft size={16} />
+            <span>Transfer</span>
+          </button>
         </div>
       </div>
 
@@ -117,7 +134,13 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
       <SummaryCards />
 
       {/* 2. Cash vs E-Wallet Breakdown */}
-      <CashWalletBreakdown onSelectSourceFilter={onSelectSourceFilter} />
+      <CashWalletBreakdown
+        onSelectSourceFilter={onSelectSourceFilter}
+        onTransfer={(sourceId) => {
+          setTransferFrom(sourceId);
+          setIsTransferOpen(true);
+        }}
+      />
 
       {/* 3. Interactive Charts Grid */}
       <div
@@ -173,6 +196,13 @@ export const DashboardPage = ({ onNavigateTab, onSelectSourceFilter }) => {
       <BudgetFormModal
         isOpen={isBudgetModalOpen}
         onClose={() => setIsBudgetModalOpen(false)}
+      />
+
+      {/* Transfer Between Accounts Modal */}
+      <TransferModal
+        isOpen={isTransferOpen}
+        onClose={() => setIsTransferOpen(false)}
+        defaultFrom={transferFrom}
       />
 
       {/* Deletion Confirmation Modal */}
